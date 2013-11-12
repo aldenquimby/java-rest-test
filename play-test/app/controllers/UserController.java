@@ -3,6 +3,7 @@ package controllers;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import database.Database;
 import models.User;
+import play.libs.F;
 import play.libs.Json;
 import play.mvc.*;
 
@@ -26,7 +27,6 @@ public class UserController extends Controller
         return ok(Json.toJson(user));
     }
 
-    @BodyParser.Of(BodyParser.Json.class)
     public static Result createUser()
     {
         User newUser = Json.fromJson(request().body().asJson(), User.class);
@@ -34,7 +34,6 @@ public class UserController extends Controller
         return created(Json.toJson(inserted));
     }
 
-    @BodyParser.Of(BodyParser.Json.class)
     public static Result updateUser(Long id)
     {
         User user = Json.fromJson(request().body().asJson(), User.class);

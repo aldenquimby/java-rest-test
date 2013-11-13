@@ -1,16 +1,21 @@
-logs
+# play
 project/project
 project/target
 target
-tmp
-.history
+logs
 dist
-/.idea
-/*.iml
 /out
-/.idea_modules
+
+# intellij
+/.idea/workspace.xml
+/.idea/misc.xml
+/*.iws
+
+# vagrant
+/RUNNING_PID
+/.vagrant
+
+# eclipse
 /.classpath
 /.project
-/RUNNING_PID
 /.settings
-/.vagrant

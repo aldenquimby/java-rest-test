@@ -1,49 +1,80 @@
-import org.junit.*;
+import com.fasterxml.jackson.databind.JsonNode;
+import org.junit.Test;
+import play.libs.Json;
+import play.mvc.HandlerRef;
+import play.mvc.Result;
+import play.test.FakeRequest;
 
-import play.mvc.*;
-import play.test.*;
-import play.libs.F.*;
-
+import static org.fest.assertions.Assertions.assertThat;
 import static play.test.Helpers.*;
-import static org.fest.assertions.Assertions.*;
 
 public class UserIntegrationTests
 {
-    /*
-    final static int PORT = 3333;
-    final static String API_BASE = "/api/v1/users";
-    final static String APPLICATION_JSON = "application/json";
-
     @Test
-    public void fullBlownTestWithServer()
+    public void testGetUsers()
     {
-        runServerHitEndpoint("", new Callback<TestBrowser>() {
-            @Override
-            public void invoke(TestBrowser browser) throws Throwable {
-                assertThat(browser.pageSource()).contains("alden");
-            }
-        });
+        HandlerRef action = controllers.routes.ref.UserController.getUsers();
+
+        JsonNode res = getValidJson(action, fakeRequest(), OK);
+
+        assertThat(res.isArray());
+        assertThat(res.get(0).get("firstName").textValue()).isEqualTo("alden");
     }
 
     @Test
-    public void simpleTestWithReverseRouting()
+    public void testGetUser()
     {
-        Result result = callAction(controllers.routes.UserController.getUsers());
-        assertThat(status(result)).isEqualTo(OK);
-        assertThat(contentType(result)).isEqualTo(APPLICATION_JSON);
-        assertThat(contentAsString(result)).contains("alden");
+        HandlerRef action = controllers.routes.ref.UserController.getUser(1);
+
+        JsonNode res = getValidJson(action, fakeRequest(), OK);
+
+        assertThat(res.get("id").asLong()).isEqualTo(1);
     }
 
-    private void runServerHitEndpoint(final String endpoint, final Callback<TestBrowser> test)
+    @Test
+    public void testCreateUser()
     {
-        running(testServer(PORT, fakeApplication(inMemoryDatabase())), HTMLUNIT, new Callback<TestBrowser>() {
-            @Override
-            public void invoke(TestBrowser browser) throws Throwable {
-                browser.goTo(API_BASE + endpoint);
-                test.invoke(browser);
-            }
-        });
-    }
-    */
+        HandlerRef action = controllers.routes.ref.UserController.createUser();
+        JsonNode body = Json.newObject().put("firstName", "alden").put("lastName", "quimby");
 
+        JsonNode res1 = getValidJson(action, body, CREATED);
+        JsonNode res2 = getValidJson(action, body, CREATED);
+
+        assertThat(res1.get("firstName").textValue()).isEqualTo("alden");
+        assertThat(res2.get("lastName").textValue()).isEqualTo("quimby");
+        assertThat(res1.get("id").asLong()).isNotEqualTo(res2.get("id").asLong());
+    }
+
+    @Test
+    public void testUpdateUser()
+    {
+        HandlerRef action = controllers.routes.ref.UserController.updateUser(1);
+        JsonNode body = Json.newObject().put("firstName", "alden").put("lastName", "dude");
+
+        JsonNode res = getValidJson(action, body, OK);
+
+        assertThat(res.get("id").asLong()).isEqualTo(1);
+        assertThat(res.get("lastName").textValue()).isEqualTo("dude");
+    }
+
+    @Test
+    public void testDeleteUser()
+    {
+        HandlerRef action = controllers.routes.ref.UserController.getUser(1);
+
+        getValidJson(action, fakeRequest(), OK);
+    }
+
+    private JsonNode getValidJson(HandlerRef action, JsonNode body, int status)
+    {
+        return getValidJson(action, fakeRequest().withJsonBody(body), status);
+    }
+
+    private JsonNode getValidJson(HandlerRef action, FakeRequest fr, int status)
+    {
+        Result result = callAction(action, fr);
+        assertThat(contentType(result)).isEqualTo("application/json");
+        assertThat(status(result)).isEqualTo(status);
+        return Json.parse(contentAsString(result));
+    }
 }

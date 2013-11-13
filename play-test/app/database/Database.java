@@ -38,7 +38,7 @@ public class Database
         return new ArrayList<>( _users.values());
     }
 
-    public static void deleteUser(Long id) {
-        _users.remove(id);
+    public static boolean deleteUser(Long id) {
+        return _users.remove(id) != null;
     }
 }

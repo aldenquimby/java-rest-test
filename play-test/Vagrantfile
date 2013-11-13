@@ -6,16 +6,21 @@ $bootstrap = <<SCRIPT
     # Download necessary packages
     apt-get update
     apt-get install -y openjdk-7-jre
+    apt-get install -y openjdk-7-jdk
     apt-get install -y scala
     apt-get install unzip
 
     # Download, extract, and move play
-    wget http://downloads.typesafe.com/play/2.2.1/play-2.2.1.zip
-    unzip play-2.2.1.zip
-    rm play-2.2.1.zip
-    mv play-2.2.1 /opt
-    ln -s /opt/play-2.2.1 /opt/play
-    ln -s /opt/play/play /usr/local/bin/play
+    if command -v play >/dev/null 2>&1; then
+        echo "Playframework already installed."
+    else
+        wget http://downloads.typesafe.com/play/2.2.1/play-2.2.1.zip
+        unzip play-2.2.1.zip
+        rm play-2.2.1.zip
+        mv play-2.2.1 /opt
+        ln -s /opt/play-2.2.1 /opt/play
+        ln -s /opt/play/play /usr/local/bin/play
+    fi
 
     # start the play app on port 80
     cd /vagrant

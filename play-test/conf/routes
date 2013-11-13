@@ -5,3 +5,9 @@ GET     /api/v1/users/:id           controllers.UserController.getUser(id: Long)
 POST    /api/v1/users               controllers.UserController.createUser
 PUT     /api/v1/users/:id           controllers.UserController.updateUser(id: Long)
 DELETE  /api/v1/users/:id           controllers.UserController.deleteUser(id: Long)
+
+GET     /api/v2/users               controllers.UserController.getUsersAsync
+GET     /api/v2/users/:id           controllers.UserController.getUserAsync(id: Long)
+POST    /api/v2/users               controllers.UserController.createUserAsync
+PUT     /api/v2/users/:id           controllers.UserController.updateUserAsync(id: Long)
+DELETE  /api/v2/users/:id           controllers.UserController.deleteUserAsync(id: Long)

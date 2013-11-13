@@ -1,4 +1,5 @@
 import com.fasterxml.jackson.databind.JsonNode;
+import controllers.routes;
 import org.junit.Test;
 import play.libs.Json;
 import play.mvc.HandlerRef;
@@ -13,7 +14,7 @@ public class UserIntegrationTests
     @Test
     public void testGetUsers()
     {
-        HandlerRef action = controllers.routes.ref.UserController.getUsers();
+        HandlerRef action = routes.ref.UserController.getUsersAsync();
 
         JsonNode res = getValidJson(action, fakeRequest(), OK);
 
@@ -24,7 +25,7 @@ public class UserIntegrationTests
     @Test
     public void testGetUser()
     {
-        HandlerRef action = controllers.routes.ref.UserController.getUser(1);
+        HandlerRef action = routes.ref.UserController.getUserAsync(1);
 
         JsonNode res = getValidJson(action, fakeRequest(), OK);
 
@@ -34,7 +35,7 @@ public class UserIntegrationTests
     @Test
     public void testCreateUser()
     {
-        HandlerRef action = controllers.routes.ref.UserController.createUser();
+        HandlerRef action = routes.ref.UserController.createUserAsync();
         JsonNode body = Json.newObject().put("firstName", "alden").put("lastName", "quimby");
 
         JsonNode res1 = getValidJson(action, body, CREATED);
@@ -48,7 +49,7 @@ public class UserIntegrationTests
     @Test
     public void testUpdateUser()
     {
-        HandlerRef action = controllers.routes.ref.UserController.updateUser(1);
+        HandlerRef action = routes.ref.UserController.updateUserAsync(1);
         JsonNode body = Json.newObject().put("firstName", "alden").put("lastName", "dude");
 
         JsonNode res = getValidJson(action, body, OK);
@@ -60,7 +61,7 @@ public class UserIntegrationTests
     @Test
     public void testDeleteUser()
     {
-        HandlerRef action = controllers.routes.ref.UserController.getUser(1);
+        HandlerRef action = routes.ref.UserController.deleteUserAsync(1);
 
         getValidJson(action, fakeRequest(), OK);
     }

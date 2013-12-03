@@ -1,3 +1,5 @@
+package controllers;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import controllers.routes;
 import org.junit.Test;

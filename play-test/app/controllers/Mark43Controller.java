@@ -5,7 +5,7 @@ import play.mvc.Controller;
 
 public class Mark43Controller extends Controller
 {
-    protected static <T> F.Promise<T> makePromise(F.Function0<T> func)
+    protected static <T> F.Promise<T> promise(F.Function0<T> func)
     {
         return F.Promise.promise(func);
     }

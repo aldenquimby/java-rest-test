@@ -13,7 +13,7 @@ public class UserController extends Mark43Controller
 {
     public static F.Promise<Result> getUsersAsync()
     {
-        F.Promise<List<User>> promise = makePromise(new F.Function0<List<User>>() {
+        F.Promise<List<User>> promise = promise(new F.Function0<List<User>>() {
             @Override
             public List<User> apply() {
                 return Database.getUsers();
@@ -30,7 +30,7 @@ public class UserController extends Mark43Controller
 
     public static F.Promise<Result> getUserAsync(final Long id)
     {
-        F.Promise<User> promise = makePromise(new F.Function0<User>() {
+        F.Promise<User> promise = promise(new F.Function0<User>() {
             @Override
             public User apply() {
                 return Database.getUser(id);
@@ -49,7 +49,7 @@ public class UserController extends Mark43Controller
     {
         final User newUser = Json.fromJson(request().body().asJson(), User.class);
 
-        F.Promise<User> promise = makePromise(new F.Function0<User>() {
+        F.Promise<User> promise = promise(new F.Function0<User>() {
             @Override
             public User apply() {
                 return Database.addUser(newUser);
@@ -68,7 +68,7 @@ public class UserController extends Mark43Controller
     {
         final User user = Json.fromJson(request().body().asJson(), User.class);
 
-        F.Promise<User> promise = makePromise(new F.Function0<User>() {
+        F.Promise<User> promise = promise(new F.Function0<User>() {
             @Override
             public User apply() {
                 return Database.updateUser(id, user);
@@ -85,7 +85,7 @@ public class UserController extends Mark43Controller
 
     public static F.Promise<Result> deleteUserAsync(final Long id)
     {
-        F.Promise<Boolean> promise = makePromise(new F.Function0<Boolean>() {
+        F.Promise<Boolean> promise = promise(new F.Function0<Boolean>() {
             @Override
             public Boolean apply() {
                 return Database.deleteUser(id);
